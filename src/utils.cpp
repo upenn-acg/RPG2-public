@@ -36,9 +36,9 @@ pg2_env::pg2_env(){
 
 
 void pg2_env::read_config(){
-   const char* dir_path = std::getenv("PG2_R_PATH");
+   const char* dir_path = std::getenv("RPG2_PATH");
    if (!dir_path){
-      printf("[tracer][error] please specify environment variable PG2_PATH\n");
+      printf("[tracer][error] please specify environment variable RPG2_PATH\n");
       exit(-1);
    }
 
