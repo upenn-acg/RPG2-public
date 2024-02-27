@@ -56,7 +56,7 @@ Please follow the commands below to install `BOLT`
 ```bash
 > git clone git@github.com:zyuxuan0115/RPG2-public.git
 > cd RPG2-public
-> export PG2_R_PATH=/your/absolute/path/to/pg2_reloc/directory
+> export RPG2_PATH=/your/absolute/path/to/pg2_reloc/directory
 > make
 ```
 - `make` will produce 1 executables (`tracer`)+ 1 shared library (`inject_prefetch.so`). 
