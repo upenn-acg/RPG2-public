@@ -9,9 +9,9 @@ bat-dump=/home/zyuxuan/llvm-17.0/build/bin/llvm-bat-dump
 ## first make sure that the directory is created and has 
 ## the correct ownership.
 ## the path of directory that stores the temporary data 
-tmp_data_dir=/home/zyuxuan/pg2_data/
+tmp_data_dir=/home/zyuxuan/rpg2_data/
 ## path where you put your inject_prefetch.so
-lib=/home/zyuxuan/floar/pg2_reloc/
+lib=/home/zyuxuan/floar/rpg2_reloc/
 
 
 ## NOTE: the command you list here must have the full path 
