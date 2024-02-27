@@ -1,5 +1,8 @@
 # RPG^2: Robust Profile-Guided Runtime Prefetch Generation
-RPG^2 is a pure-software system that operates on running C/C++ programs, profiling them, injecting prefetch instructions, and then tuning those prefetches to maximize performance. Across dozens of inputs, we find that RPG^2 can provide speedups of up to Max Speedup, comparable to the best profile-guided prefetching compilers, but can also respond when prefetching ends up being harmful and roll back to the original code -- something that static compilers cannot. RPG^2 improves prefetching robustness by preserving its performance benefits, while avoiding slowdowns.
+RPG^2 is a pure-software system that operates on running C/C++ programs, profiling them, injecting prefetch instructions, and then tuning those prefetches to maximize performance. Across dozens of inputs, we find that RPG^2 can provide speedups of up to Max Speedup, comparable to the best profile-guided prefetching compilers, but can also respond when prefetching ends up being harmful and roll back to the original code -- something that static compilers cannot. RPG^2 improves prefetching robustness by preserving its performance benefits, while avoiding slowdowns. 
+
+## Note
+We only tested the BOLT pass [InjectPrefetchPass.cpp](https://github.com/upenn-acg/BOLT/blob/rpg2/bolt/lib/Passes/InjectPrefetchPass.cpp) only works for the C/C++ programs that are compiled by clang-10 on the Intel Xeon Gold 6230R Cascade Lake or Intel Xeon(R) CPU E5-2618L v3 Haswell servers with Linux version 5.40. For other settings, we cannot guarantee the BOLT we developed work well. 
 
 ## Prerequisites
 Please refer instructions from links or directly run commands listed below to install prerequisites: 
@@ -18,7 +21,7 @@ Please follow the commands below to install `BOLT`
 > mkdir BOLT && cd BOLT
 > git clone git@github.com:upenn-acg/BOLT.git llvm-bolt
 > cd llvm-bolt 
-> git checkout pg2/bat
+> git checkout rpg2
 > cd ..
 > mkdir build && cd build
 > cmake -G "Unix Makefiles" ../llvm-bolt/llvm -DLLVM_TARGETS_TO_BUILD="X86;AArch64" -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_ASSERTIONS=ON -DLLVM_ENABLE_PROJECTS="clang;lld;bolt"
