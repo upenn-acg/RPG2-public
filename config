@@ -1,0 +1,25 @@
+#perf=/usr/bin/perf
+#nm=/usr/bin/nm
+#objdump=/usr/bin/objdump
+llvm-bolt=/home/zyuxuan/BOLT-func-reloc/build/bin/llvm-bolt  
+#perf2bolt=/home/zyuxuan/BOLT-func-reloc/build/bin/perf2bolt
+bat-dump=/home/zyuxuan/llvm-17.0/build/bin/llvm-bat-dump
+
+## NOTE: before using the directory you list here, please
+## first make sure that the directory is created and has 
+## the correct ownership.
+## the path of directory that stores the temporary data 
+tmp_data_dir=/home/zyuxuan/pg2_data/
+## path where you put your inject_prefetch.so
+lib=/home/zyuxuan/floar/pg2_reloc/
+
+
+## NOTE: the command you list here must have the full path 
+## of the binary 
+#cmd=/home/zyuxuan/floar/pg2_reloc/workloads/CRONO/pagerank_lock/pagerank_lock 1 1 /home/zyuxuan/floar/apt-get/inputs/roadNet-PA.txt 3000
+#cmd=/home/zyuxuan/floar/pg2_reloc/workloads/CRONO/pagerank_lock/pagerank_lock 0 1 200000 5 19537
+#cmd=/home/zyuxuan/floar/pg2_reloc/workloads/CRONO/sssp/sssp 1 1 /home/zyuxuan/floar/apt-get/inputs/roadNet-CA.txt 5
+#cmd=/home/zyuxuan/floar/pg2_reloc/workloads/CRONO/bc/bc 1 20000 200
+cmd=/home/zyuxuan/floar/pg2_reloc/workloads/AinsworthCGO2017/randacc/randacc 2000000000
+#cmd=/home/zyuxuan/floar/pg2_reloc/workloads/AinsworthCGO2017/nas-is/is 400
+#cmd=/home/zyuxuan/floar/pg2_reloc/workloads/AinsworthCGO2017/nas-cg/cg 100

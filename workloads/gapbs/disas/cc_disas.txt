@@ -1,0 +1,163 @@
+sassembly of section .text:
+
+0000000000005e50 <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2>:
+    comp[n] = n;
+
+  // Process a sparse sampled subgraph first for approximating components.
+  // Sample by processing a fixed number of neighbors for each node (see paper)
+  for (int r = 0; r < neighbor_rounds; ++r) {
+  #pragma omp parallel for schedule(dynamic,16384)
+    5e50:	41 56									push   %r14
+    5e52:	b9 00 40 00 00				mov    $0x4000,%ecx
+    5e57:	ba 01 00 00 00				mov    $0x1,%edx
+    5e5c:	41 55									push   %r13
+    5e5e:	41 54									push   %r12
+    5e60:	49 89 fc							mov    %rdi,%r12
+    5e63:	55										push   %rbp
+    5e64:	53										push   %rbx
+    5e65:	48 83 ec 20						sub    $0x20,%rsp
+    5e69:	4c 63 6f 10						movslq 0x10(%rdi),%r13
+    5e6d:	64 48 8b 04 25 28 00	mov    %fs:0x28,%rax
+    5e74:	00 00
+    5e76:	48 89 44 24 18				mov    %rax,0x18(%rsp)
+    5e7b:	31 c0									xor    %eax,%eax
+    for (NodeID u = 0; u < g.num_nodes(); u++) {
+    5e7d:	48 8b 07							mov    (%rdi),%rax
+    5e80:	48 8d 6c 24 10				lea    0x10(%rsp),%rbp
+    5e85:	48 8d 5c 24 08				lea    0x8(%rsp),%rbx
+    5e8a:	31 ff									xor    %edi,%edi
+    5e8c:	49 89 e9							mov    %rbp,%r9
+    5e8f:	49 89 d8							mov    %rbx,%r8
+    5e92:	48 63 70 08						movslq 0x8(%rax),%rsi
+    5e96:	e8 c5 cd 00 00				call   12c60 <GOMP_loop_dynamic_start@plt>
+    5e9b:	84 c0									test   %al,%al
+    5e9d:	75 4e									jne    5eed <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x9d>
+    5e9f:	e8 cc cd 00 00				call   12c70 <GOMP_loop_end_nowait@plt>
+  #pragma omp parallel for schedule(dynamic,16384)
+    5ea4:	48 8b 44 24 18				mov    0x18(%rsp),%rax
+    5ea9:	64 48 33 04 25 28 00	xor    %fs:0x28,%rax
+    5eb0:	00 00
+    5eb2:	0f 85 05 01 00 00			jne    5fbd <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x16d>
+    5eb8:	48 83 c4 20						add    $0x20,%rsp
+    5ebc:	5b										pop    %rbx
+    5ebd:	5d										pop    %rbp
+    5ebe:	41 5c									pop    %r12
+    5ec0:	41 5d									pop    %r13
+    5ec2:	41 5e									pop    %r14
+    5ec4:	c3										ret
+    5ec5:	0f 1f 00							nopl   (%rax)
+      return __sync_fetch_and_add(&x, inc);
+    }
+
+    template<typename T>
+    bool compare_and_swap(T &x, const T &old_val, const T &new_val) {
+      return __sync_bool_compare_and_swap(&x, old_val, new_val);
+    5ec8:	f0 41 0f b1 13				lock cmpxchg %edx,(%r11)
+        (p_high == high && compare_and_swap(comp[high], high, low)))
+    5ecd:	0f 85 e1 00 00 00			jne    5fb4 <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x164>
+    5ed3:	83 c6 01							add    $0x1,%esi
+    5ed6:	48 83 c1 04						add    $0x4,%rcx
+    5eda:	39 f7									cmp    %esi,%edi
+    5edc:	7f 22									jg     5f00 <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0xb0>
+    5ede:	48 89 ee							mov    %rbp,%rsi
+    5ee1:	48 89 df							mov    %rbx,%rdi
+    5ee4:	e8 97 cd 00 00				call   12c80 <GOMP_loop_dynamic_next@plt>
+    5ee9:	84 c0									test   %al,%al
+    5eeb:	74 b2									je     5e9f <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x4f>
+    5eed:	48 8b 4c 24 08				mov    0x8(%rsp),%rcx
+    5ef2:	8b 7c 24 10						mov    0x10(%rsp),%edi
+    5ef6:	89 ce									mov    %ecx,%esi
+    5ef8:	48 63 c9							movslq %ecx,%rcx
+    5efb:	48 c1 e1 02						shl    $0x2,%rcx
+    5eff:	90										nop
+      for (NodeID v : g.out_neigh(u, r)) {
+    5f00:	49 8b 04 24						mov    (%r12),%rax
+    5f04:	48 8b 40 18						mov    0x18(%rax),%rax
+      OffsetT max_offset = end() - begin();
+      start_offset_ = std::min(start_offset, max_offset);
+    }
+    typedef DestID_* iterator;
+    iterator begin() { return g_index_[n_] + start_offset_; }
+    iterator end()   { return g_index_[n_+1]; }
+    5f08:	48 8b 54 48 08				mov    0x8(%rax,%rcx,2),%rdx
+    iterator begin() { return g_index_[n_] + start_offset_; }
+    5f0d:	4c 8b 04 48						mov    (%rax,%rcx,2),%r8
+      OffsetT max_offset = end() - begin();
+    5f11:	48 89 d0							mov    %rdx,%rax
+    5f14:	4c 29 c0							sub    %r8,%rax
+    5f17:	48 c1 f8 02						sar    $0x2,%rax
+    iterator begin() { return g_index_[n_] + start_offset_; }
+    5f1b:	4c 39 e8							cmp    %r13,%rax
+    5f1e:	49 0f 47 c5						cmova  %r13,%rax
+    5f22:	49 8d 04 80						lea    (%r8,%rax,4),%rax
+    5f26:	48 39 d0							cmp    %rdx,%rax
+    5f29:	74 a8									je     5ed3 <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x83>
+        // Link at most one time if neighbor available at offset r
+        Link(u, v, comp);
+    5f2b:	4d 8b 4c 24 08				mov    0x8(%r12),%r9
+  NodeID p2 = comp[v];
+    5f30:	48 63 00							movslq (%rax),%rax
+  NodeID p1 = comp[u];
+    5f33:	4d 8b 11							mov    (%r9),%r10
+    5f36:	45 8b 04 0a						mov    (%r10,%rcx,1),%r8d
+  NodeID p2 = comp[v];
+    5f3a:	41 8b 14 82						mov    (%r10,%rax,4),%edx
+  while (p1 != p2) {
+    5f3e:	41 39 d0							cmp    %edx,%r8d
+    5f41:	74 90									je     5ed3 <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x83>
+    NodeID high = p1 > p2 ? p1 : p2;
+    5f43:	41 89 d6							mov    %edx,%r14d
+    5f46:	45 0f 4d f0						cmovge %r8d,%r14d
+    NodeID low = p1 + (p2 - high);
+    5f4a:	44 29 f2							sub    %r14d,%edx
+    5f4d:	44 01 c2							add    %r8d,%edx
+    NodeID p_high = comp[high];
+    5f50:	4d 63 c6							movslq %r14d,%r8
+    reserve(num_elements);
+    end_size_ = start_ + num_elements;
+  }
+
+  T_& operator[](size_t n) {
+    return start_[n];
+    5f53:	49 c1 e0 02						shl    $0x2,%r8
+    5f57:	4f 8d 1c 02						lea    (%r10,%r8,1),%r11
+    5f5b:	49 63 03							movslq (%r11),%rax
+    if ((p_high == low) ||
+    5f5e:	39 d0									cmp    %edx,%eax
+    5f60:	0f 84 6d ff ff ff			je     5ed3 <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x83>
+    5f66:	44 39 f0							cmp    %r14d,%eax
+    5f69:	0f 84 59 ff ff ff			je     5ec8 <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x78>
+    p2 = comp[low];
+    5f6f:	48 63 d2							movslq %edx,%rdx
+    p1 = comp[comp[high]];
+    5f72:	41 8b 04 82						mov    (%r10,%rax,4),%eax
+    p2 = comp[low];
+    5f76:	41 8b 14 92						mov    (%r10,%rdx,4),%edx
+  while (p1 != p2) {
+    5f7a:	39 d0									cmp    %edx,%eax
+    5f7c:	0f 84 51 ff ff ff			je     5ed3 <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x83>
+    NodeID high = p1 > p2 ? p1 : p2;
+    5f82:	41 89 d6							mov    %edx,%r14d
+    5f85:	44 0f 4d f0						cmovge %eax,%r14d
+    NodeID p_high = comp[high];
+    5f89:	4d 63 c6							movslq %r14d,%r8
+    NodeID low = p1 + (p2 - high);
+    5f8c:	44 29 f2							sub    %r14d,%edx
+    5f8f:	49 c1 e0 02						shl    $0x2,%r8
+    5f93:	01 c2									add    %eax,%edx
+    5f95:	4f 8d 1c 02						lea    (%r10,%r8,1),%r11
+    NodeID p_high = comp[high];
+    5f99:	49 63 03							movslq (%r11),%rax
+    if ((p_high == low) ||
+    5f9c:	39 c2									cmp    %eax,%edx
+    5f9e:	75 c6									jne    5f66 <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x116>
+    5fa0:	83 c6 01							add    $0x1,%esi
+    5fa3:	48 83 c1 04						add    $0x4,%rcx
+    5fa7:	39 f7									cmp    %esi,%edi
+    5fa9:	0f 8f 51 ff ff ff			jg     5f00 <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0xb0>
+    5faf:	e9 2a ff ff ff				jmp    5ede <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x8e>
+    5fb4:	4d 8b 11							mov    (%r9),%r10
+    5fb7:	4b 63 04 02						movslq (%r10,%r8,1),%rax
+    5fbb:	eb b2									jmp    5f6f <_Z8AfforestRK8CSRGraphIiiLb1EEi._omp_fn.2+0x11f>
+  #pragma omp parallel for schedule(dynamic,16384)
+    5fbd:	e8 ce cc 00 00				call   12c90 <__stack_chk_fail@plt>

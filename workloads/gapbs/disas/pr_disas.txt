@@ -1,0 +1,160 @@
+Disassembly of section .text:
+
+00000000000050f0 <_Z14PageRankPullGSRK8CSRGraphIiiLb1EEid._omp_fn.1>:
+  #pragma omp parallel for
+  for (NodeID n=0; n < g.num_nodes(); n++)
+    outgoing_contrib[n] = init_score / g.out_degree(n);
+  for (int iter=0; iter < max_iters; iter++) {
+    double error = 0;
+    #pragma omp parallel for reduction(+ : error) schedule(dynamic, 16384)
+    50f0:	41 54                	push   %r12
+    50f2:	b9 00 40 00 00       	mov    $0x4000,%ecx
+    50f7:	49 89 fc             	mov    %rdi,%r12
+    50fa:	ba 01 00 00 00       	mov    $0x1,%edx
+    50ff:	55                   	push   %rbp
+    5100:	53                   	push   %rbx
+    5101:	48 83 ec 30          	sub    $0x30,%rsp
+    5105:	f3 0f 10 67 20       	movss  0x20(%rdi),%xmm4
+    510a:	64 48 8b 04 25 28 00 	mov    %fs:0x28,%rax
+    5111:	00 00 
+    5113:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
+    5118:	31 c0                	xor    %eax,%eax
+    for (NodeID u=0; u < g.num_nodes(); u++) {
+    511a:	48 8b 07             	mov    (%rdi),%rax
+    511d:	48 8d 5c 24 20       	lea    0x20(%rsp),%rbx
+    5122:	48 8d 6c 24 18       	lea    0x18(%rsp),%rbp
+    5127:	49 89 d9             	mov    %rbx,%r9
+    512a:	49 89 e8             	mov    %rbp,%r8
+    512d:	31 ff                	xor    %edi,%edi
+    #pragma omp parallel for reduction(+ : error) schedule(dynamic, 16384)
+    512f:	f3 0f 11 24 24       	movss  %xmm4,(%rsp)
+    5134:	48 63 70 08          	movslq 0x8(%rax),%rsi
+    5138:	e8 a3 dc 00 00       	call   12de0 <GOMP_loop_dynamic_start@plt>
+    513d:	66 0f ef d2          	pxor   %xmm2,%xmm2
+    5141:	84 c0                	test   %al,%al
+    5143:	0f 84 fa 00 00 00    	je     5243 <_Z14PageRankPullGSRK8CSRGraphIiiLb1EEid._omp_fn.1+0x153>
+    5149:	f3 0f 10 35 a3 d5 ff 	movss  -0x2a5d(%rip),%xmm6        # 26f4 <_IO_stdin_used+0x10>
+    5150:	ff 
+    5151:	f3 0f 10 24 24       	movss  (%rsp),%xmm4
+    5156:	f3 0f 10 2d 92 db ff 	movss  -0x246e(%rip),%xmm5        # 2cf0 <_ZTS10CLPageRank+0x38>
+    515d:	ff 
+    515e:	66 90                	xchg   %ax,%ax
+    5160:	49 8b 54 24 08       	mov    0x8(%r12),%rdx
+      ScoreT incoming_total = 0;
+      for (NodeID v : g.in_neigh(u))
+    5165:	49 8b 04 24          	mov    (%r12),%rax
+    5169:	44 8b 5c 24 20       	mov    0x20(%rsp),%r11d
+    516e:	48 63 4c 24 18       	movslq 0x18(%rsp),%rcx
+    5173:	4c 8b 0a             	mov    (%rdx),%r9
+    5176:	49 8b 54 24 10       	mov    0x10(%r12),%rdx
+    517b:	4c 8b 50 28          	mov    0x28(%rax),%r10
+    517f:	4c 8b 40 18          	mov    0x18(%rax),%r8
+    5183:	48 8b 3a             	mov    (%rdx),%rdi
+    5186:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+    518d:	00 00 00 
+      OffsetT max_offset = end() - begin();
+      start_offset_ = std::min(start_offset, max_offset);
+    }
+    typedef DestID_* iterator;
+    iterator begin() { return g_index_[n_] + start_offset_; }
+    iterator end()   { return g_index_[n_+1]; }
+    5190:	49 8b 74 ca 08       	mov    0x8(%r10,%rcx,8),%rsi
+   *  preprocessor macro.
+  */
+  template<typename _Tp>
+    _GLIBCXX14_CONSTEXPR
+    inline const _Tp&
+    min(const _Tp& __a, const _Tp& __b)
+    5195:	49 8b 04 ca          	mov    (%r10,%rcx,8),%rax
+      ScoreT incoming_total = 0;
+    5199:	66 0f ef c0          	pxor   %xmm0,%xmm0
+      for (NodeID v : g.in_neigh(u))
+    519d:	48 39 c6             	cmp    %rax,%rsi
+    51a0:	74 1b                	je     51bd <_Z14PageRankPullGSRK8CSRGraphIiiLb1EEid._omp_fn.1+0xcd>
+    51a2:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+        incoming_total += outgoing_contrib[v];
+    51a8:	48 63 10             	movslq (%rax),%rdx
+    51ab:	48 83 c0 04          	add    $0x4,%rax
+    51af:	f3 0f 58 04 97       	addss  (%rdi,%rdx,4),%xmm0
+      for (NodeID v : g.in_neigh(u))
+    51b4:	48 39 c6             	cmp    %rax,%rsi
+    51b7:	75 ef                	jne    51a8 <_Z14PageRankPullGSRK8CSRGraphIiiLb1EEid._omp_fn.1+0xb8>
+    51b9:	f3 0f 59 c6          	mulss  %xmm6,%xmm0
+      ScoreT old_score = scores[u];
+      scores[u] = base_score + kDamp * incoming_total;
+    51bd:	f3 0f 58 c4          	addss  %xmm4,%xmm0
+      ScoreT old_score = scores[u];
+    51c1:	f3 41 0f 10 0c 89    	movss  (%r9,%rcx,4),%xmm1
+  int64_t num_edges_directed() const {
+    return directed_ ? num_edges_ : 2*num_edges_;
+  }
+
+  int64_t out_degree(NodeID_ v) const {
+    return out_index_[v+1] - out_index_[v];
+    51c7:	49 8b 44 c8 08       	mov    0x8(%r8,%rcx,8),%rax
+    51cc:	49 2b 04 c8          	sub    (%r8,%rcx,8),%rax
+    51d0:	48 c1 f8 02          	sar    $0x2,%rax
+      error += fabs(scores[u] - old_score);
+    51d4:	0f 28 f8             	movaps %xmm0,%xmm7
+      scores[u] = base_score + kDamp * incoming_total;
+    51d7:	f3 41 0f 11 04 89    	movss  %xmm0,(%r9,%rcx,4)
+      error += fabs(scores[u] - old_score);
+    51dd:	f3 0f 5c f9          	subss  %xmm1,%xmm7
+    51e1:	0f 28 cf             	movaps %xmm7,%xmm1
+  using ::fabs;
+
+#ifndef __CORRECT_ISO_CPP_MATH_H_PROTO
+  inline _GLIBCXX_CONSTEXPR float
+  fabs(float __x)
+  { return __builtin_fabsf(__x); }
+    51e4:	0f 54 cd             	andps  %xmm5,%xmm1
+    51e7:	f3 0f 5a c9          	cvtss2sd %xmm1,%xmm1
+    51eb:	f2 0f 58 d1          	addsd  %xmm1,%xmm2
+      outgoing_contrib[u] = scores[u] / g.out_degree(u);
+    51ef:	66 0f ef c9          	pxor   %xmm1,%xmm1
+    51f3:	f3 48 0f 2a c8       	cvtsi2ss %rax,%xmm1
+    51f8:	f3 0f 5e c1          	divss  %xmm1,%xmm0
+    51fc:	f3 0f 11 04 8f       	movss  %xmm0,(%rdi,%rcx,4)
+    5201:	48 83 c1 01          	add    $0x1,%rcx
+    5205:	41 39 cb             	cmp    %ecx,%r11d
+    5208:	7f 86                	jg     5190 <_Z14PageRankPullGSRK8CSRGraphIiiLb1EEid._omp_fn.1+0xa0>
+    520a:	48 89 de             	mov    %rbx,%rsi
+    520d:	48 89 ef             	mov    %rbp,%rdi
+    5210:	f3 0f 11 64 24 0c    	movss  %xmm4,0xc(%rsp)
+    5216:	f2 0f 11 14 24       	movsd  %xmm2,(%rsp)
+    521b:	e8 d0 db 00 00       	call   12df0 <GOMP_loop_dynamic_next@plt>
+    5220:	f2 0f 10 14 24       	movsd  (%rsp),%xmm2
+    5225:	f3 0f 10 64 24 0c    	movss  0xc(%rsp),%xmm4
+    522b:	f3 0f 10 2d bd da ff 	movss  -0x2543(%rip),%xmm5        # 2cf0 <_ZTS10CLPageRank+0x38>
+    5232:	ff 
+    5233:	84 c0                	test   %al,%al
+    5235:	f3 0f 10 35 b7 d4 ff 	movss  -0x2b49(%rip),%xmm6        # 26f4 <_IO_stdin_used+0x10>
+    523c:	ff 
+    523d:	0f 85 1d ff ff ff    	jne    5160 <_Z14PageRankPullGSRK8CSRGraphIiiLb1EEid._omp_fn.1+0x70>
+    5243:	f2 0f 11 14 24       	movsd  %xmm2,(%rsp)
+    5248:	e8 b3 db 00 00       	call   12e00 <GOMP_loop_end_nowait@plt>
+    524d:	49 8b 54 24 18       	mov    0x18(%r12),%rdx
+    5252:	f2 0f 10 14 24       	movsd  (%rsp),%xmm2
+    #pragma omp parallel for reduction(+ : error) schedule(dynamic, 16384)
+    5257:	49 8d 4c 24 18       	lea    0x18(%r12),%rcx
+    525c:	48 89 14 24          	mov    %rdx,(%rsp)
+    5260:	f2 0f 10 34 24       	movsd  (%rsp),%xmm6
+    5265:	48 89 d0             	mov    %rdx,%rax
+    5268:	f2 0f 58 f2          	addsd  %xmm2,%xmm6
+    526c:	66 48 0f 7e f6       	movq   %xmm6,%rsi
+    5271:	f0 48 0f b1 31       	lock cmpxchg %rsi,(%rcx)
+    5276:	48 39 c2             	cmp    %rax,%rdx
+    5279:	75 19                	jne    5294 <_Z14PageRankPullGSRK8CSRGraphIiiLb1EEid._omp_fn.1+0x1a4>
+    527b:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
+    5280:	64 48 33 04 25 28 00 	xor    %fs:0x28,%rax
+    5287:	00 00 
+    5289:	75 0e                	jne    5299 <_Z14PageRankPullGSRK8CSRGraphIiiLb1EEid._omp_fn.1+0x1a9>
+    528b:	48 83 c4 30          	add    $0x30,%rsp
+    528f:	5b                   	pop    %rbx
+    5290:	5d                   	pop    %rbp
+    5291:	41 5c                	pop    %r12
+    5293:	c3                   	ret    
+    5294:	48 89 c2             	mov    %rax,%rdx
+    5297:	eb c3                	jmp    525c <_Z14PageRankPullGSRK8CSRGraphIiiLb1EEid._omp_fn.1+0x16c>
+    5299:	e8 72 db 00 00       	call   12e10 <__stack_chk_fail@plt>
+
