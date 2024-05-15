@@ -1,6 +1,6 @@
 # RPG^2: Robust Profile-Guided Runtime Prefetch Generation
 RPG^2 is a pure-software system that operates on running C/C++ programs, profiling them, injecting prefetch instructions, and then tuning those prefetches to maximize performance. Across dozens of inputs, we find that RPG^2 can provide speedups of up to Max Speedup, comparable to the best profile-guided prefetching compilers, but can also respond when prefetching ends up being harmful and roll back to the original code -- something that static compilers cannot. RPG^2 improves prefetching robustness by preserving its performance benefits, while avoiding slowdowns. 
-A description of how we implemented RPG^2 and experimental results are in [ASPLOS'24 paper](https://dl.acm.org/doi/10.1145/3620665.3640396)
+- A description of how we implemented RPG^2 and experimental results of RPG^2 are in [ASPLOS'24 paper](https://dl.acm.org/doi/10.1145/3620665.3640396)
 
 ## Note
 We only tested the BOLT pass [InjectPrefetchPass.cpp](https://github.com/upenn-acg/BOLT/blob/rpg2/bolt/lib/Passes/InjectPrefetchPass.cpp) for the C/C++ programs that are compiled by clang-10 on the Intel Xeon Gold 6230R Cascade Lake and Intel Xeon(R) CPU E5-2618L v3 Haswell servers with Linux version 5.40. For other settings, we cannot guarantee the BOLT pass we developed works well. 
